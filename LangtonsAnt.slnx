@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="LangtonsAnt.Core/LangtonsAnt.Core.csproj" />
+  <Project Path="LangtonsAnt.Console/LangtonsAnt.Console.csproj" />
+  <Project Path="LangtonsAnt.Tests/LangtonsAnt.Tests.csproj" />
+</Solution>

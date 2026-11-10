@@ -16,11 +16,35 @@ public sealed class Ant
 
     public AntStep Step()
     {
-        throw new NotImplementedException($"{nameof(Ant)}.{nameof(Step)}");
+        Position from = Position;
+        bool onWhite = _world.GetColor(from) == CellColor.White;
+
+        int turn = onWhite ? 1 : -1;
+        Direction nextDirection = (Direction)(((int)Direction + turn + 4) % 4);
+        Position to = nextDirection switch
+        {
+            Direction.North => new Position(from.X, from.Y - 1),
+            Direction.East => new Position(from.X + 1, from.Y),
+            Direction.South => new Position(from.X, from.Y + 1),
+            Direction.West => new Position(from.X - 1, from.Y),
+            _ => throw new InvalidOperationException("Неизвестное направление муравья.")
+        };
+
+        CellColor fromColorAfter = onWhite ? CellColor.Black : CellColor.White;
+        _world.SetColor(from, fromColorAfter);
+        Position = to;
+        Direction = nextDirection;
+
+        return new AntStep(from, to, nextDirection, fromColorAfter, _world.GetColor(to));
     }
 
     public IEnumerable<AntStep> GetSteps(int count)
     {
-        throw new NotImplementedException($"{nameof(Ant)}.{nameof(GetSteps)}");
+        ArgumentOutOfRangeException.ThrowIfNegative(count);
+
+        for (int i = 0; i < count; i++)
+        {
+            yield return Step();
+        }
     }
 }
